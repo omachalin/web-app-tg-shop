@@ -1,0 +1,150 @@
+{% extends 'main/base.html' %}
+{% block title %}Каталог{% endblock %}
+{% block content %}
+
+{% if request.GET.tag_id %}
+<div class="container-fluid top-0 z-3 mb-2 p-0">
+	<div class="px-1 py-1">
+		<a href="{{ request.GET.prev_link }}" class="text-dark text-decoration-none fw-medium back-panel border-0">
+			<i class="fa-solid fa-arrow-left me-2"></i>Назад
+		</a>
+	</div>
+</div>
+{% endif %}
+
+<div class="container p-0">
+	<div class="mb-4 search-form-wrapper position-relative">
+		<div class="filter-bar gap-2">
+			<form method="get" class="filter-bar__search" action="{% url 'product_list' %}">
+				<div class="input-group input-group-lg shadow-sm">
+					<span class="input-group-text border-end-0 block-search-icon">
+						<svg class="icon-search" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
+							viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+							stroke-linejoin="round">
+							<circle cx="11" cy="11" r="8" />
+							<path d="m21 21-4.35-4.35" />
+						</svg>
+					</span>
+					<input type="text" class="form-control border-start-0 ps-0 search-input" placeholder="Поиск"
+						autocomplete="off">
+				</div>
+			</form>
+			<div>
+				<button class="filter-btn" data-show-filter-btn>
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" stroke-width="2"
+						stroke-linecap="round" stroke-linejoin="round"
+						class="lucide lucide-sliders-horizontal text-gray-400" aria-hidden="true">
+						<path d="M10 5H3"></path>
+						<path d="M12 19H3"></path>
+						<path d="M14 3v4"></path>
+						<path d="M16 17v4"></path>
+						<path d="M21 12h-9"></path>
+						<path d="M21 19h-5"></path>
+						<path d="M21 5h-7"></path>
+						<path d="M8 10v4"></path>
+						<path d="M8 12H3"></path>
+					</svg>
+				</button>
+			</div>
+		</div>
+
+		<div id="searchOverlay" class="search-overlay d-none p-0 mb-3">
+			<div class="container p-3">
+				{% for category in categories %}
+				<span attr-id="{{ category.id }}" class="badge rounded-pill text-dark border badge-item me-2 mb-2">
+					{{ category.name }}
+				</span>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+
+	<div>
+		<div class="row row-cols-2 g-3" id="products_list">
+			{% include "main/product_list.html" with products=products %}
+		</div>
+		<div data-lazyload-anchor></div>
+	</div>
+</div>
+
+<div class="catalog-filter" data-catalog-filter>
+	<div class="container">
+
+		<div class="catalog-filter__title">
+			Фильтры
+
+
+			<button data-filter-close class="p-2 catalog-filter__close rounded-full hover:bg-gray-100"><svg
+					xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+					stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+					class="lucide lucide-x text-black" aria-hidden="true">
+					<path d="M18 6 6 18"></path>
+					<path d="m6 6 12 12"></path>
+				</svg></button>
+		</div>
+		<form class="catalog-filter__body" action="">
+			<div class="filter-group">
+				<div class="filter-group__label">Категории</div>
+				<div class="filter-group__controls">
+					<div class="chip-group">
+						{% for category in categories %}
+						<label class="chip mt-2">
+							<input class="chip__input filter-chip" attr-id="{{ category.id }}" value="0"
+								type="checkbox" />
+							<span class="chip__name">{{ category.name }}</span>
+						</label>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+			<div class="filter-group">
+				<div class="filter-group__label">Диапазон</div>
+				<div class="filter-group__controls">
+					<div class="catalog-filter__interval">
+						<div class="interval">
+							<div class="interval__item">
+								<div class="textfield">
+									<label class="textfield__label">От</label>
+									<input class="textfield__input" value="0" type="text" />
+								</div>
+							</div>
+							<div class="interval__">—</div>
+							<div class="interval__item">
+								<div class="textfield">
+									<label class="textfield__label">От</label>
+									<input class="textfield__input" value="500" type="text" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="filter-group">
+				<div class="filter-group__label">Сортировка</div>
+				<div class="filter-group__controls">
+					<div class="interval">
+						<div class="textfield">
+							<select class="textfield__input" id="filter-sort">
+								<option value="name">По умолчанию</option>
+								<option value="name">По названию</option>
+								<option value="-name">По названию (в обратном порядке)</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+
+		<div class="catalog-filter__controls gap-2">
+			<div class="catalog-filter__btn">
+				<a href="/?tg=1"><button class="btn btn-filter-reset" type="button">Сбросить</button></a>
+
+			</div>
+			<div class="catalog-filter__btn">
+				<button class="btn filter-start" type="submit">Применить</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>{% block title %}Shop{% endblock %}</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static '/css/style.css' %}?v=1.13" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+
+<body>
+    <div class="top-bar">
+        {% if request.path != '/' %}
+        <a href="/?tg=1" class="main-link-catalog">
+            <h1 class="catalog-title" id="main-page-click">КАТАЛОГ</h1>
+        </a>
+        {% else %}
+        <h1 class="catalog-title" id="main-page-click">КАТАЛОГ</h1>
+        {% endif %}
+
+
+        <label class="theme-switch">
+            <input type="checkbox" id="themeToggle">
+            <div class="slider">
+                <div class="theme-switch__slide">
+                    <div class="theme-switch__icon theme-switch__light">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="rgb(255, 205, 41)" stroke="#efd349" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="lucide lucide-sun text-[rgb(255,205,41)]" aria-hidden="true"
+                            style="width: clamp(1.7rem, 3vw, 2rem); height: clamp(1.7rem, 3vw, 2rem);">
+                            <circle cx="12" cy="12" r="4"></circle>
+                            <path d="M12 2v2"></path>
+                            <path d="M12 20v2"></path>
+                            <path d="m4.93 4.93 1.71 1.71"></path>
+                            <path d="m17.66 17.66 1.71 1.71"></path>
+                            <path d="M2 12h2"></path>
+                            <path d="M20 12h2"></path>
+                            <path d="m6.34 17.66-1.71 1.71"></path>
+                            <path d="m19.07 4.93-1.71 1.71"></path>
+                        </svg>
+                    </div>
+                    <div class="theme-switch__icon theme-switch__dark">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="#0a84ff" stroke="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-moon text-[#0a84ff]" aria-hidden="true"
+                            style="width: clamp(1.7rem, 3vw, 2rem); height: clamp(1.7rem, 3vw, 2rem);">
+                            <path
+                                d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401">
+                            </path>
+                        </svg>
+                    </div>
+                </div>
+
+            </div>
+        </label>
+    </div>
+
+    <div class="container mt-4">
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer class="text-center py-3 mt-4 text-muted text-footer">
+        вопросы и предложения — <a href="https://t.me/Moskvichka_AV">@support</a>
+    </footer>
+
+
+    <div class="backdrop" data-backdrop></div>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static '/js/main.js' %}?v=1.13"></script>
+
+</body>
+
+</html>

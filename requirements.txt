@@ -1,0 +1,13 @@
+drf-yasg
+django-debug-toolbar
+django-filter --pre
+rest-framework-roles
+python-decouple
+psycopg>=3.2
+psycopg2-binary
+Pillow
+django-minio-backend
+minio
+django-ckeditor
+pyTelegramBotAPI
+django-object-actions

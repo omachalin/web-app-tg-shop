@@ -1,0 +1,118 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid top-0 z-3 mb-2">
+    <div class="px-1 py-1">
+        <a href="/?tg=1" class="text-dark text-decoration-none fw-medium back-panel border-0">
+            <i class="fa-solid fa-arrow-left me-2"></i>Назад
+        </a>
+    </div>
+</div>
+
+<div class="container pb-2 mt-3">
+
+    {% if product.attachments.exists %}
+    <div id="productCarousel" class="productCarousel carousel slide mb-4" data-bs-ride="false">
+        <div class="carousel-inner rounded-3 overflow-hidden shadow">
+            {% for img in product.attachments.all %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+
+                {% with file=img.attachment.file.url|lower %}
+                {% if ".mp4" in file or ".webm" in file %}
+                <video class="d-block w-100" style="object-fit: cover; height: 42vh;" controls>
+                    <source src="{{ img.attachment.file.url }}">
+                </video>
+                {% else %}
+                <img src="{{ img.attachment.file.url }}" class="d-block w-100"
+                    alt="{{ product.name }} - {{ img.attachment.original_name }}"
+                    style="object-fit: cover; height: 42vh;">
+                {% endif %}
+                {% endwith %}
+
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if product.attachments.count > 1 %}
+        <button class="carousel-control-prev productCarousel__arr" type="button" data-bs-target="#productCarousel"
+            data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Предыдущая</span>
+        </button>
+        <button class="carousel-control-next productCarousel__arr" type="button" data-bs-target="#productCarousel"
+            data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Следующая</span>
+        </button>
+
+        <div class="carousel-indicators mt-2">
+            {% for img in product.attachments.all %}
+            <button type="button" data-bs-target="#productCarousel" data-bs-slide-to="{{ forloop.counter0 }}"
+                class="{% if forloop.first %}active{% endif %}">
+            </button>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    {% else %}
+    {% if product.preview_fk %}
+    <img src="{{ product.preview_fk.file.url }}" class="img-fluid rounded-3 shadow mb-4"
+        style="max-height: 70vh; object-fit: contain;">
+    {% endif %}
+    {% endif %}
+
+    <div class="px-2">
+        <h1 class="fs-3 fw-bold mb-3">{{ product.name }}</h1>
+
+        <div class="fs-2 fw-bold text-green mb-2">
+            {{ product.price|safe }}
+        </div>
+
+        {% if product.short_description %}
+        <p class="text-muted mb-3 short-description">{{ product.short_description|safe }}</p>
+        {% endif %}
+
+        <div class="filter-group__controls mb-3">
+            <div class="chip-group">
+                {% for tag in tags %}
+                <label class="chip mt-2 tag-right">
+                    <input class="chip__input filter-chip" type="checkbox" disabled />
+                    <a href="/?tag_id={{ tag.id }}&prev_link=&prev_link={{ request.get_full_path|urlencode }}&tg=1"
+                        class="chip__name text-blue border-0">
+                        #{{ tag.name }}
+                    </a>
+                </label>
+                {% endfor %}
+            </div>
+        </div>
+
+        {% if product.content %}
+        <div class="mb-4 text-dark lh-lg main-description">
+            <h2>Описание</h2>
+            {{ product.content|safe }}
+        </div>
+        {% endif %}
+
+        <div class="d-grid gap-3">
+            <a href="{{ product.username_tg }}" target="_blank"
+                class="btn btn-primary btn-lg d-flex align-items-center justify-content-center btn-tg">
+                <span>Связаться в Telegram</span>
+                <img src="{% static '/image/Telegram_logo.svg' %}" alt="Telegram" width="28" height="28"
+                    style="margin-left: 8px;">
+            </a>
+            {% if product.phone %}
+            <a href="tel:{{ product.phone }}"
+                class="btn btn-primary btn-lg d-flex align-items-center justify-content-center btn-call">
+                <i class="fa-solid fa-phone" style="margin-right: 8px;"></i>
+                <span>Позвонить</span>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
